@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 require('./config/config')
 
 const moongose = require('mongoose')
+const path = require('path');
 
 
 //MIDDLEWARE
@@ -13,6 +14,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+//Habilitar la carpeta public
+app.use(express.static(path.resolve(__dirname, '../public')));
+
+//Config global de rutas
 app.use(require('./routes/index'))
 
 
