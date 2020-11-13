@@ -1,12 +1,13 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cors = require('cors');
 require('./config/config')
 
 const moongose = require('mongoose')
 const path = require('path');
 
-
+app.use(cors());
 //MIDDLEWARE
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
