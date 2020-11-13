@@ -19,60 +19,12 @@ let verifToken = (req, res, next) => {
             });
         }
 
-        req.usuario = decoded.usuario;
-        next();
-    });
-
-}
-
-//============================
-// Verificar AdminRole
-//============================
-
-let verifTokenRole = (req, res, next) => {
-
-    let usuario = req.usuario;
-
-    if (usuario.role === 'ADMIN_ROLE') {
-        next();
-    } else {
-        return res.json({
-            ok: true,
-            error: {
-                message: 'el usuario no es administrador'
-            }
-        })
-    }
-}
-
-//============================
-// Verifica token image
-//============================
-
-let verifyTokenImg = (req, res, next) => {
-
-    let token = req.query.token;
-
-    jwt.verify(token, process.env.SEED, (err, decoded) => {
-
-        if (err) {
-            return res.json({
-
-                ok: false,
-                err: {
-                    message: 'Token no valido'
-                }
-            });
-        }
-
-        req.usuario = decoded.usuario;
+        req.conductor = decoded.conductor;
         next();
     });
 
 }
 
 module.exports = {
-    verifToken,
-    verifTokenRole,
-    verifyTokenImg
+    verifToken
 }
