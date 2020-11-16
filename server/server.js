@@ -1,11 +1,13 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cors = require('cors');
 require('./config/config')
 
 const moongose = require('mongoose')
 const path = require('path');
 
+<<<<<<< HEAD
 //cors
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -16,6 +18,9 @@ app.use((req, res, next) => {
 });
 
 
+=======
+app.use(cors());
+>>>>>>> 330b75455fcd7db1bd09415c618dc307e05c9b80
 //MIDDLEWARE
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
