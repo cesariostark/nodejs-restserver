@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const Driver = require('../models/conductor');
 const Passenger = require('../models/pasajero');
 const app = express();
