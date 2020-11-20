@@ -12,12 +12,13 @@ let verifToken = (req, res, next) => {
         if (err) {
             return res.status(401).json({
                 ok: false,
+                mensaje: 'Token no es correcto',
                 err
             });
         }
         req.conductor = decoded.conductor;
         next();
-    });
+    })
 }
 
 module.exports = {
