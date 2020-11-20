@@ -15,7 +15,7 @@ let verifToken = (req, res, next) => {
                 err
             });
         }
-        req.conductor = decoded.conductor;
+        req.user = decoded.user;
         next();
     });
 }
