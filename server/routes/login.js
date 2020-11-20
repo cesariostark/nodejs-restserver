@@ -15,7 +15,9 @@ app.post('/login/conductor', (req, res) => {
         if (err) {
             res.status(400).json({
                 ok: false,
-                err
+                err: {
+                    message: 'Usuario o contraseña incorrectos'
+                }
             });
         }
 
