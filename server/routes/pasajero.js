@@ -1,33 +1,48 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const _ = require('underscore');
 const app = express();
-const Conductor = require('../models/conductor');
-const {verifToken} = require('../middlewares/auth');
+const verifToken = require('../middlewares/auth');
+const Passenger = require('../models/pasajero');
 
 
+// ========================
+// Listar todos pasajeros
+// ========================
 
-app.get('/conductor', (req, res) => {
+app.get('/pasajero', (req, res) => {
 
-    Conductor.find({})
-        .exec((err, usuarios) => {
+    let body = req.body;
+
+    Passenger.find({})
+        .exec((err, pasajeros) => {
             if (err) {
                 return res.status(400).json({
-                    ok: false,
-                    err
-                })
+
+                });
             }
             res.json({
                 ok: true,
-                usuarios
+                pasajeros
             });
         });
 });
 
-app.post('/conductor', verifToken, (req, res) => {
+// ========================
+// Listar pasajeros por rut
+// ========================
+
+//app.get('/pasajero/:run')
+
+
+// ========================
+// Crear un pasajero
+// ========================
+
+app.post('/pasajero', (req, res) => {
+
     let body = req.body;
 
-    let conductor = new Conductor({
+    let passenger = new Passenger({
         run: body.run,
         nombre: body.nombre,
         apellido: body.apellido,
@@ -36,8 +51,7 @@ app.post('/conductor', verifToken, (req, res) => {
         direccion: body.direccion,
         comuna: body.comuna
     });
-
-    conductor.save((err, driverDB) => {
+    passenger.save((err, pasajeroDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -47,18 +61,21 @@ app.post('/conductor', verifToken, (req, res) => {
 
         res.json({
             ok: true,
-            conductor: driverDB
+            pasajero: pasajeroDB
         })
     })
+});
 
-})
+// =============================
+// Modificar un pasajero por run
+// =============================
 
-app.put('/conductor/:run', verifToken, (req, res) => {
+app.put('/pasajero/:run', (req, res) => {
 
     let run = req.params.run;
     let body = _.pick(req.body, ['run', 'nombre', 'apellido', 'email', 'direccion', 'comuna']);
 
-    Conductor.findByIdAndUpdate(run, body, { new: true, runValidators: true }, (err, driverDB) => {
+    Passenger.findByIdAndUpdate(run, body, { new: true, runValidators: true }, (err, pasajeroDB) => {
 
         if (err) {
             return res.status(400).json({
@@ -69,19 +86,25 @@ app.put('/conductor/:run', verifToken, (req, res) => {
 
         res.json({
             ok: true,
-            conductor: driverDB
+            pasajero: pasajeroDB
         })
     })
-})
 
-app.delete('/conductor/:run', verifToken, (req, res) => {
+});
+
+
+// =============================
+// Eliminar un pasajero por run
+// =============================
+
+app.delete('/pasajero/:run', verifToken, (req, res) => {
 
 
     let run = req.params.run;
 
 
     // Usuario.findByIdAndRemove(id, (err, usuarioDelete) => {
-    Conductor.findByIdAndRemove(run, (err, driverDelete) => {
+    Passenger.findByIdAndRemove(run, (err, pasajeroDelete) => {
 
         let run = req.params.run;
 
@@ -93,22 +116,19 @@ app.delete('/conductor/:run', verifToken, (req, res) => {
             })
         }
 
-        if (!driverDelete) {
+        if (!pasajeroDelete) {
 
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: "Conductor no encontrado"
+                    message: "Pasajero no encontrado"
                 }
             })
         }
 
         res.json({
             ok: true,
-            driverDelete
+            pasajeroDelete
         })
     })
 })
-
-
-module.exports = app;

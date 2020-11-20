@@ -2,14 +2,14 @@
 
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const { unique } = require('underscore');
 
 
-
-//Comando para la creación de esquemas en Mongo
+//Esquema
 
 let Schema = mongoose.Schema;
 
-let driverSchema = new Schema({
+let passengerSchema = new Schema({
 
     run: {
         type: String,
@@ -27,7 +27,7 @@ let driverSchema = new Schema({
     email: {
         type: String,
         required: [true, 'El email es necesario'],
-        unique: true
+        true: unique
     },
     password: {
         type: String,
@@ -41,10 +41,8 @@ let driverSchema = new Schema({
         type: String,
         required: [true, 'La comuna es necesaria']
     }
-
 });
 
-//No debe haber usuarios repetidos
-driverSchema.plugin(uniqueValidator, {message: '{PATH} debe ser único'});
+passengerSchema.plugin(uniqueValidator, '{PATH} debe ser único');
 
-module.exports = mongoose.model('Driver', driverSchema);
+module.exports = mongoose.model('Passenger', passengerSchema);
