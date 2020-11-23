@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const app = express();
 const verifToken = require('../middlewares/auth');
-const Passenger = require('../models/pasajero');
+const db = require('../middlewares/db');
 
 
 // ========================
@@ -11,20 +11,15 @@ const Passenger = require('../models/pasajero');
 
 app.get('/pasajero', (req, res) => {
 
-    let body = req.body;
+    db.connect();
+    db.query('SELECT * FROM pasajero', (err, row, fields) => {
 
-    Passenger.find({})
-        .exec((err, pasajeros) => {
-            if (err) {
-                return res.status(400).json({
-
-                });
-            }
-            res.json({
-                ok: true,
-                pasajeros
-            });
-        });
+        if (!err) {
+            res.send(rows)
+        } else {
+            console.log(err);
+        }
+    })
 });
 
 // ========================

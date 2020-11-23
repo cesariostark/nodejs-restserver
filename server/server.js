@@ -3,8 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors');
 require('./config/config')
-
-const moongose = require('mongoose')
+const db = require('./middlewares/db')
 const path = require('path');
 
 //cors
@@ -24,16 +23,12 @@ app.use(express.static(path.resolve(__dirname, '../src')));
 //Config global de rutas
 app.use(require('./routes/index'))
 
+//conexion a BD
+db.connect(function(err){
+    if (err) throw console.error('Connection error: ' + err)
+    else{ console.log('Connected as id: ' + db.threadId)}
+});
 
-moongose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
-    (err, res) => {
-
-        // useUnifiedTopology: true
-        // useNewUrlParser: true
-        if (err) throw err;
-
-        console.log('BD Online')
-    });
 app.listen(process.env.PORT, () => {
     console.log('ejecutando desde el puerto 3000')
 })
