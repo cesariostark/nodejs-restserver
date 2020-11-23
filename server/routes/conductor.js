@@ -24,7 +24,7 @@ app.get('/conductor', (req, res) => {
         });
 });
 
-app.post('/conductor', verifToken, (req, res) => {
+app.post('/conductor', (req, res) => {
     let body = req.body;
 
     let conductor = new Conductor({
