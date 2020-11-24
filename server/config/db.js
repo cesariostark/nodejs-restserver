@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 
+//Conexion a BD
 const pool = mysql.createPool({
     host     : 'us-cdbr-east-02.cleardb.com',
     user     : 'bf22a30332897b',
