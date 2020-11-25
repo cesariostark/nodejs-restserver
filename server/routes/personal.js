@@ -1,6 +1,8 @@
 const express = require('express');
 const services = require('../services/personal.services');
 const bcrypt = require('bcrypt');
+const pool = require('../config/db');
+const conecction = require('../config/db');
 
 const app = express();
 
@@ -10,6 +12,7 @@ const app = express();
 app.get('/personal', (req, res) => {
 
 });
+
 
 app.post('/personal', (req, res) => {
     
