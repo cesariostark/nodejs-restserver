@@ -6,6 +6,7 @@ const app = express();
 //default opt
 app.use(fileUpload());
 
+//metodo para subir archivos
 app.put('/upload', function(req, res){
 
     if (!req.files) {
