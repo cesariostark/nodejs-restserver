@@ -1,129 +1,131 @@
 const express = require('express');
+const services = require('../services/pasajero.services');
 const bcrypt = require('bcrypt');
+
+
 const app = express();
-const verifToken = require('../middlewares/auth');
-const db = require('../middlewares/db');
 
 
-// ========================
-// Listar todos pasajeros
-// ========================
 
+//Listar todos los pasajeros
 app.get('/pasajero', (req, res) => {
 
-    db.connect();
-    db.query('SELECT * FROM pasajero', (err, row, fields) => {
+    services.getAllPasajero((error, results) => {
 
-        if (!err) {
-            res.send(rows)
-        } else {
-            console.log(err);
+        if (error) {
+            console.log(error);
+            return;
         }
-    })
-});
+        if(!results){
+            return res.json({
+                success: 0,
+                message: 'No existen pasajeros en la base de datos.'
+            });
+        }
 
-// ========================
-// Listar pasajeros por rut
-// ========================
-
-//app.get('/pasajero/:run')
-
-
-// ========================
-// Crear un pasajero
-// ========================
-
-app.post('/pasajero', (req, res) => {
-
-    let body = req.body;
-
-    let passenger = new Passenger({
-        run: body.run,
-        nombre: body.nombre,
-        apellido: body.apellido,
-        email: body.email,
-        password: bcrypt.hashSync(body.password, 10),
-        direccion: body.direccion,
-        comuna: body.comuna
+        return res.json({
+            success: 1,
+            data: results
+        });
     });
-    passenger.save((err, pasajeroDB) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
+});
+
+
+//Listar pasajero por rut
+app.get('/pasajero/:rut', (req, res) => {
+
+    let rut = req.params.rut;
+    services.getPasajeroById(rut, (error, results) => {
+
+        if(error){
+            console.log(error);
+            return;
+        }
+        if(!results){
+            return res.json({
+                success: 0,
+                message: "Usuario no encontrado"
+            });
+        }
+        return res.json({
+            success: 1,
+            data: results
+        });
+    });
+});
+
+
+//Crear un usuario pasajero.
+app.post('/personal', (req, res) => {
+    
+    let body = req.body;
+    let salt = bcrypt.genSaltSync(10);
+    body.password = bcrypt.hashSync(body.password, salt);
+
+    services.crearPasajero(body, (error, results) => {
+
+        if(error) {
+            console.log(error);
+            return res.status(500).json({
+                success: 0,
+                message: 'Database connection server error'
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+            message: 'Usuario creado'
+        });
+    });
+});
+
+//Actualizar datos de un personal.
+app.patch('/pasajero', (req, res) => {
+    
+    const body = req.body;
+    const salt = bcrypt.genSaltSync(10);
+    body.password = bcrypt.hashSync(body.password, salt);
+
+    services.updatePasajero(body, (error, results) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        if(!results){
+            return res.json({
+                success: 0,
+                message: 'Fallo al actualizar usuario'
+            });
+        }
+        return res.json({
+            success: 1,
+            message: 'Usuario actualizado correctamente'
+        });
+    });
+
+});
+
+//Eliminar datos de un usuario de la tabla personal
+
+app.delete('/pasajero', (req, res) => {
+    
+    const data = req.body;
+    services.deletePasajero(data, (error, results) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        if(!results){
+            return res.json({
+                success: 0,
+                message: 'Usuario no encontrado'
             })
         }
-
-        res.json({
-            ok: true,
-            pasajero: pasajeroDB
+        return res.json({
+            success: 1,
+            message: 'Usuario eliminado correctamente'
         })
     })
 });
 
-// =============================
-// Modificar un pasajero por run
-// =============================
-
-app.put('/pasajero/:run', (req, res) => {
-
-    let run = req.params.run;
-    let body = _.pick(req.body, ['run', 'nombre', 'apellido', 'email', 'direccion', 'comuna']);
-
-    Passenger.findByIdAndUpdate(run, body, { new: true, runValidators: true }, (err, pasajeroDB) => {
-
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            })
-        }
-
-        res.json({
-            ok: true,
-            pasajero: pasajeroDB
-        })
-    })
-
-});
-
-
-// =============================
-// Eliminar un pasajero por run
-// =============================
-
-app.delete('/pasajero/:run', verifToken, (req, res) => {
-
-
-    let run = req.params.run;
-
-
-    // Usuario.findByIdAndRemove(id, (err, usuarioDelete) => {
-    Passenger.findByIdAndRemove(run, (err, pasajeroDelete) => {
-
-        let run = req.params.run;
-
-
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            })
-        }
-
-        if (!pasajeroDelete) {
-
-            return res.status(400).json({
-                ok: false,
-                err: {
-                    message: "Pasajero no encontrado"
-                }
-            })
-        }
-
-        res.json({
-            ok: true,
-            pasajeroDelete
-        })
-    })
-})
+module.exports = app;
