@@ -1,5 +1,6 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const importExcel = require('convert-excel-to-json');
 
 const app = express();
 
@@ -39,11 +40,32 @@ app.post('/upload', function(req, res){
                 ok: false,
                 msg: 'No se pudo subir archivo'
             });
+        } else{
+            let result = importExcel({
+                sourceFile: `uploads/${newFileName}`,
+                header: {rows: 1},
+                columnToKey: {
+                    A: 'FECHA',
+                    B: 'HORA',
+                    C: 'SOLICITANTE',
+                    D: 'NOMBRE',
+                    E: 'RUT',
+                    F: 'DIRECCION',
+                    G: 'COMUNA',
+                    H: 'CENTRO COSTO 1',
+                    I: 'CENTRO COSTO 2',
+                    J: 'CONDUCTOR',
+                    K: 'DETALLE'
+                }/* 
+                sheets: ['Sheet1'] */
+            });
+            console.log(result);
+            res.json({
+                ok: true,
+                msg: 'Archivo subido correctamente'
+            });
         }
-        res.json({
-            ok: true,
-            msg: 'Archivo subido correctamente'
-        });
+        
     });
 });
 
