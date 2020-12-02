@@ -31,30 +31,30 @@ app.post('/login', (req, res) => {
         const result = bcrypt.compareSync(body.password, results.contraseña);
         if (result) {
             results.contraseña = undefined;
-        }
-        const token = jwt.sign({result: results}, process.env.TOKEN, {expiresIn: '4h'});
-        if(results.roles_id_Roles === 1){
-            res.json({
-                success: 1,
-                message: 'Inicio de sesión exitoso',
-                token
-            });
-            console.log('Usuario administrador')
+            const token = jwt.sign({result: results}, process.env.TOKEN, {expiresIn: '4h'});
+            if(results.roles_id_Roles === 1){
+                res.json({
+                    success: 1,
+                    message: 'Inicio de sesión exitoso',
+                    token
+                });
+                console.log('Usuario administrador')
 
-        } else if (results.roles_id_Roles === 2){
-            res.json({
-                success: 1,
-                message: 'Inicio de sesión exitoso',
-                token
-            });
-            console.log('Usuario conductor')
-        } else if (results.roles_id_Roles === 3){
-            res.json({
-                success: 1,
-                message: 'Inicio de sesión exitoso',
-                token
-            });
-            console.log('Usuario pasajero')
+            } else if (results.roles_id_Roles === 2){
+                res.json({
+                    success: 1,
+                    message: 'Inicio de sesión exitoso',
+                    token
+                });
+                console.log('Usuario conductor')
+            } else if (results.roles_id_Roles === 3){
+                res.json({
+                    success: 1,
+                    message: 'Inicio de sesión exitoso',
+                    token
+                });
+                console.log('Usuario pasajero')
+            }
         }
         
     });
