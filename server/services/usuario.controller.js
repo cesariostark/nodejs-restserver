@@ -153,7 +153,7 @@ const obtenerPasajeroPorRut = (rut, callBack) => {
 // Obtener todos los pasajeros
 const obtenerPasajeros = (callBack) => {
 
-    pool.query(`SELECT * from usuario where roles_id_Roles = 2`,
+    pool.query(`SELECT * from usuario where roles_id_Roles = 3`,
     (error, results, fields) => {
         if(error){
             return callBack(error);
