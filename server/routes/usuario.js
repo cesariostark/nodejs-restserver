@@ -103,9 +103,9 @@ app.patch('/usuario/administrador', (req, res) => {
 });
 
 // Eliminar usuario administrador 
-app.delete('/usuario/administrador', (req, res) => {
+app.delete('/usuario/administrador/:rut', (req, res) => {
 
-    const data = req.body;
+    const data = req.params.rut;
     usuario.eliminarUsuario(data, (error, results) => {
         if(error){
             console.log(error);
@@ -222,9 +222,9 @@ app.patch('/usuario/conductor', (req, res) => {
 });
 
 // Eliminar usuario conductor
-app.delete('/usuario/conductor', (req, res) => {
+app.delete('/usuario/conductor/:rut', (req, res) => {
 
-    const data = req.body;
+    const data = req.params.rut;
     usuario.eliminarUsuario(data, (error, results) => {
         if(error){
             console.log(error);
@@ -343,9 +343,9 @@ app.patch('/usuario/pasajero', (req, res) => {
 });
 
 // Eliminar usuario pasajero 
-app.delete('/usuario/pasajero', (req, res) => {
+app.delete('/usuario/pasajero/:rut', (req, res) => {
 
-    const data = req.body;
+    const data = req.params.rut
     usuario.eliminarUsuario(data, (error, results) => {
         if(error){
             console.log(error);

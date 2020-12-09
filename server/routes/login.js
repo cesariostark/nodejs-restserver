@@ -17,8 +17,7 @@ app.post('/login', (req, res) => {
         });
     }
     usuario.obtenerUsuarioPorRut(body.rut, (error, results) => {
-
-        
+ 
         if (error) {
             console.log(error);
         }
