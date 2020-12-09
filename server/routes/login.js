@@ -60,5 +60,13 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/logout', (req, res) => {
+
+    token = undefined;
+    res.json({
+        message: 'logout'
+    })
+});
+
 module.exports = app;
 
