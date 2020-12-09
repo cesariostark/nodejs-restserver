@@ -24,9 +24,6 @@ app.use(express.static(path.resolve(__dirname, '../src')));
 //Config global de rutas
 app.use(require('./routes/index'))
 
-app.get('/', (req, res) => {
-    res.send('Hola mundo');
-})
 
 app.listen(process.env.PORT, () => {
     console.log('ejecutando desde el puerto 3000')
