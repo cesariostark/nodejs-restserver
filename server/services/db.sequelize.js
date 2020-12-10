@@ -2,11 +2,11 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(
 
-    'transapp',
-    'root',
-    'password',
+    process.env.BD,
+    process.env.USER_DB,
+    process.env.PASSWORD,
     {
-        host: 'localhost',
+        host: process.env.HOST,
         dialect: 'mysql',
     }
 );
