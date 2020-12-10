@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
-
+require('../config/config');
 const sequelize = new Sequelize(
 
-    process.env.BD,
+    process.env.DB,
     process.env.USER_DB,
     process.env.PASSWORD,
     {
