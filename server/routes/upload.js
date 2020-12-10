@@ -1,10 +1,112 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
-const importExcel = require('convert-excel-to-json');
+// const fileUpload = require('express-fileupload');
+const multer = require('multer');
+const db = require('../services/db.sequelize');
+const Usuario = db.usuario;
+
+const readXlsxFile = require('read-excel-file/node');
 
 const app = express();
 
+const excelFilter = (req, file, cb) => {
 
+    if(file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')){
+
+        cb(null, true)
+    } else {
+        cb('Por favor ingrese un archivo excel', false);
+    }
+}
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, __basedir + '/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `archivo-${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = async(req, res) => {
+
+    try{
+        
+        let path = __basedir + '/uploads/' + req.file.filename; 
+        readXlsxFile(path).then((rows) => {
+
+            //Skip HEADER
+            rows.shift();
+
+            let usuario = [];
+            rows.forEach((row) => {
+                let user = {
+                    rut: row[0],
+                    nombre: row[1],
+                    email: row[2],
+                    contraseña: row[3],
+                    direccion: row[4],
+                    comuna: row[5],
+                    centro_costo_1: row[6],
+                    centro_costo_2: row[7],
+                    roles_id_Roles: row[8],
+                }
+                usuario.push(user);
+            });
+            Usuario.bulkCreate(usuario).then(() => {
+                res.status(200).json({
+                    message: 'Archivo subido a la base de datos: ' + req.file.originalname
+                });
+            })
+            .catch((error) => {
+                res.status(400).json({
+                    message: 'Falla al importar registros en base de datos',
+                    error: error.message
+                });
+            });
+        });
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            message: 'No se pudo subir el archivo: ' + req.file.originalname
+        });
+    }
+}
+
+const uploadFile = multer({storage: storage, fileFilter: excelFilter});
+
+app.post('/upload', uploadFile.single('file'), upload);
+module.exports = app;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
 app.use(fileUpload());
 app.post('/upload', function(req, res){
 
@@ -41,32 +143,12 @@ app.post('/upload', function(req, res){
                 msg: 'No se pudo subir archivo'
             });
         } else{
-            let result = importExcel({
-                sourceFile: `uploads/${newFileName}`,
-                header: {rows: 1},
-                columnToKey: {
-                    A: 'FECHA',
-                    B: 'HORA',
-                    C: 'SOLICITANTE',
-                    D: 'NOMBRE',
-                    E: 'RUT',
-                    F: 'DIRECCION',
-                    G: 'COMUNA',
-                    H: 'CENTRO COSTO 1',
-                    I: 'CENTRO COSTO 2',
-                    J: 'CONDUCTOR',
-                    K: 'DETALLE'
-                }/* 
-                sheets: ['Sheet1'] */
-            });
-            console.log(result);
             res.json({
                 ok: true,
                 msg: 'Archivo subido correctamente'
             });
         }
-        
+        upload(newFileName);
     });
-});
 
-module.exports = app;
+}); */
