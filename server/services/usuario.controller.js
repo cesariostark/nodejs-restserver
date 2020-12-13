@@ -165,7 +165,7 @@ const obtenerPasajeros = (callBack) => {
 // Actualizar pasajero
 const actualizarPasajero = (data, callBack) => {
 
-    pool.query(`UPDATE usuario set nombre=?, email=?, contraseña=?, direccion=?, comuna=?, centro_costo_1=?, centro_costo_2=? where rut = ? AND roles_id_Roles = 3`, 
+    pool.query(`UPDATE usuario set nombre=?, email=?, contraseña=?, direccion=?, comuna=?, centro_costo_1=?, centro_costo_2=? where rut=? AND roles_id_Roles=3`, 
     [
         data.nombre,
         data.email,
@@ -191,10 +191,22 @@ const actualizarPasajero = (data, callBack) => {
 // Eliminar usuario
 const eliminarUsuario = (data, callBack) => {
 
-    pool.query(`delete from usuario where rut = ?`, 
-    [data.rut],
+    pool.query(`DELETE FROM usuario WHERE rut=?`, 
+    [data],
     (error, results, fields) =>{
         if (error) {
+            return callBack(error);
+        }
+        return callBack(null, results[0]);
+    });
+}
+
+//Eliminar todos los usuarios pasajeros
+
+const eliminarPasajeros = (callBack) => {
+
+    pool.query(`DELETE FROM usuario where roles_id_Roles=3`, (error, results, fields) => {
+        if(error){
             return callBack(error);
         }
         return callBack(null, results[0]);
@@ -227,5 +239,6 @@ module.exports = {
     obtenerPasajeros,
     actualizarPasajero,
     eliminarUsuario,
-    obtenerUsuarioPorRut
+    obtenerUsuarioPorRut,
+    eliminarPasajeros
 }

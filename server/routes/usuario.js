@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const usuario = require('../services/usuario.controller')
+const usuario = require('../services/usuario.controller');
+const viaje = require('../services/viaje.controller');
 const {verifToken} = require('../middlewares/auth');
 const app = express();
 
@@ -113,15 +114,11 @@ app.delete('/usuario/administrador/:rut', (req, res) => {
         }
         if(!results){
             return res.json({
-                success: 0,
-                message: 'Usuario no encontrado'
+                success: 1,
+            message: 'Usuario eliminado correctamente'
             })
         }
-        return res.json({
-            success: 1,
-            message: 'Usuario eliminado correctamente'
-        })
-    })
+    });
 });
 
 // ===================================
@@ -232,14 +229,10 @@ app.delete('/usuario/conductor/:rut', (req, res) => {
         }
         if(!results){
             return res.json({
-                success: 0,
-                message: 'Usuario no encontrado'
+                success: 1,
+                message: 'Usuario eliminado correctamente'
             })
         }
-        return res.json({
-            success: 1,
-            message: 'Usuario eliminado correctamente'
-        })
     });
 });
 
@@ -345,22 +338,52 @@ app.patch('/usuario/pasajero', (req, res) => {
 // Eliminar usuario pasajero 
 app.delete('/usuario/pasajero/:rut', (req, res) => {
 
-    const data = req.params.rut
-    usuario.eliminarUsuario(data, (error, results) => {
+    const data = req.params.rut;
+    usuario.eliminarUsuario(data, (error, results) => {   
         if(error){
             console.log(error);
             return;
         }
         if(!results){
             return res.json({
-                success: 0,
-                message: 'Usuario no encontrado'
+                success: 1,
+                message: 'Usuario eliminado'
             })
         }
-        return res.json({
-            success: 1,
-            message: 'Usuario eliminado correctamente'
-        })
+    });
+});
+
+/* // Eliminar usuario pasajero de su viaje
+app.delete('/usuario/pasajero/viaje', (req, res) => {
+
+    const data = req.body;
+    viaje.eliminarTieneViaje(data, (error, results, next) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        if(!results){
+            return res.json({
+                success: 1
+            });
+        }
+    })
+}); */
+
+//Eliminar todos los pasajeros
+app.delete('/usuario/pasajeros', (req, res) => {
+
+    usuario.eliminarPasajeros((error, results) => {
+
+        if(error){
+            return error;
+        }
+        if(!results){
+            return res.json({
+                success: 1,
+                message: 'Todos los pasajeros han sido eliminados'
+            });
+        }
     });
 });
 
