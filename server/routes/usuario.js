@@ -79,7 +79,7 @@ app.post('/usuario/administrador', (req, res) => {
 });
 
 // Actualizar usuario administrador
-app.patch('/usuario/administrador', (req, res) => {
+app.put('/usuario/administrador', (req, res) => {
 
     const body = req.body;
     const salt = bcrypt.genSaltSync(10);
@@ -92,14 +92,10 @@ app.patch('/usuario/administrador', (req, res) => {
         }
         if(!results){
             return res.json({
-                success: 0,
-                message: 'Fallo al actualizar usuario'
-            });
-        }
-        return res.json({
-            success: 1,
-            message: 'Usuario actualizado correctamente'
-        });
+                success: 1,
+                message: 'Usuario actualizado correctamente'
+            }); 
+        }   
     });
 });
 
@@ -194,7 +190,7 @@ app.post('/usuario/conductor', verifToken, (req, res) => {
 });
 
 // Actualizar usuario conductor
-app.patch('/usuario/conductor', (req, res) => {
+app.put('/usuario/conductor', (req, res) => {
     
     const body = req.body;
     const salt = bcrypt.genSaltSync(10);
@@ -207,14 +203,10 @@ app.patch('/usuario/conductor', (req, res) => {
         }
         if(!results){
             return res.json({
-                success: 0,
-                message: 'Fallo al actualizar usuario'
+                success: 1,
+                message: 'Conductor actualizado correctamente'
             });
         }
-        return res.json({
-            success: 1,
-            message: 'Usuario actualizado correctamente'
-        });
     });
 });
 
@@ -311,27 +303,23 @@ app.post('/usuario/pasajero', (req, res) => {
 });
 
 // Actualizar usuario pasajero
-app.patch('/usuario/pasajero', (req, res) => {
+app.put('/usuario/pasajero', (req, res) => {
 
     const body = req.body;
     const salt = bcrypt.genSaltSync(10);
     body.password = bcrypt.hashSync(body.password, salt);
 
-    services.updatePasajero(body, (error, results) => {
+    usuario.actualizarPasajero(body, (error, results) => {
         if(error){
             console.log(error);
             return;
         }
         if(!results){
             return res.json({
-                success: 0,
-                message: 'Fallo al actualizar usuario'
+                success: 1,
+                message: 'Usuario actualizado correctamente'
             });
         }
-        return res.json({
-            success: 1,
-            message: 'Usuario actualizado correctamente'
-        });
     });
 });
 
