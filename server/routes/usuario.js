@@ -166,7 +166,7 @@ app.get('/usuario/conductor/:rut', (req, res) => {
 });
 
 // Crear usuario conductor
-app.post('/usuario/conductor', verifToken, (req, res) => {
+app.post('/usuario/conductor', (req, res) => {
 
     let body = req.body;
     let salt = bcrypt.genSaltSync(10);
