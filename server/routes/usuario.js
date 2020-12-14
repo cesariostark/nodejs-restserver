@@ -291,7 +291,7 @@ app.post('/usuario/pasajero', (req, res) => {
             console.log(error);
             return res.status(500).json({
                 success: 0,
-                message: 'Database connection server error'
+                message: 'Database pool server error'
             });
         }
         return res.status(200).json({
