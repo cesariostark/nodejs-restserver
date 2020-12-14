@@ -30,14 +30,14 @@ app.use(require('./routes/index'))
 
 db.sequelize.sync();
 
-// pool.getConnection(function(err) {
-//     if (err) {
-//         console.error('error connecting: ' + err.stack);
-//         return;
-//     }
+pool.getConnection(function(err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
 
-//     console.log('connected as id ' + pool.threadId);
-// });
+    console.log('connected as id ' + pool.threadId);
+});
 
 app.listen(process.env.PORT, () => {
     console.log('ejecutando desde el puerto 3000')
