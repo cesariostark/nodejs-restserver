@@ -3,6 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const db = require('../services/db.sequelize');
 const Usuario = db.usuario;
+const bcrypt = require('bcrypt');
 
 const readXlsxFile = require('read-excel-file/node');
 
@@ -28,6 +29,7 @@ let storage = multer.diskStorage({
 
 const upload = async(req, res) => {
 
+    let salt = bcrypt.genSaltSync(10);
     try{
         
         let path = __basedir + '/uploads/' + req.file.filename; 
@@ -42,7 +44,7 @@ const upload = async(req, res) => {
                     rut: row[0],
                     nombre: row[1],
                     email: row[2],
-                    contraseña: row[3],
+                    contraseña: bcrypt.hashSync(row[3], salt),
                     direccion: row[4],
                     comuna: row[5],
                     centro_costo_1: row[6],

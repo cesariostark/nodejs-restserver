@@ -1,4 +1,4 @@
-/* const pool = require('../config/db');
+/* const connection = require('../config/db');
 const query = 'SELECT viaje.fecha_hora,viaje.solicitante,usuario.nombre,usuario.rut,usuario.direccion,usuario.comuna,usuario.centro_costo_1,usuario.centro_costo_2,viaje.conductor,viaje.detalle FROM viaje JOIN usuario_has_viaje ON id_viaje=usuario_has_viaje.viaje_id_viaje JOIN usuario ON usuario.rut=usuario_has_viaje.usuario_rut'
 // FECHA
 
@@ -17,7 +17,7 @@ let fecha = `${año}-${mes}-${dia} ${hora}:${mins}:${secs}`;
 
 const obtenerViaje = (callBack) => {
 
-    pool.query(query, 
+    connection.query(query, 
     (error, results, fields) => {
         if(error){
             return callBack(error);
@@ -28,7 +28,7 @@ const obtenerViaje = (callBack) => {
 
 const obtenerViajePorID = (id, callBack) => {
 
-    pool.query(query + 'WHERE id=?', 
+    connection.query(query + 'WHERE id=?', 
     [id],
     (error, results, fields) => {
         if(error){
@@ -40,7 +40,7 @@ const obtenerViajePorID = (id, callBack) => {
 
 const crearViaje = (data, callBack) => {
 
-    pool.query(`INSERT INTO viaje (fecha_hora, solicitante, conductor, detalle) VALUES(?,?,?, null)`,
+    connection.query(`INSERT INTO viaje (fecha_hora, solicitante, conductor, detalle) VALUES(?,?,?, null)`,
     [fecha, data.solicitante, data.conductor],
     (error, results, fields) => {
         if(error){
@@ -52,7 +52,7 @@ const crearViaje = (data, callBack) => {
 
 const usuarioTieneViaje = (data, callBack) => {
 
-    pool.query('INSERT INTO pasajero_has_viaje(usuario_rut, id_viaje) VALUES (?,?)', 
+    connection.query('INSERT INTO pasajero_has_viaje(usuario_rut, id_viaje) VALUES (?,?)', 
     [data.rut, data.id],
     (error, results, fields) => {
         if(error){
@@ -64,7 +64,7 @@ const usuarioTieneViaje = (data, callBack) => {
 
 const eliminarTieneViaje = (data, callBack) => {
     
-    pool.query('DELETE FROM usuario_has_viaje WHERE usuario_rut=?', 
+    connection.query('DELETE FROM usuario_has_viaje WHERE usuario_rut=?', 
     [data.rut], 
     (error, results, fields) => {
         if(error){

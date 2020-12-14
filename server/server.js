@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const path = require('path');
 const db = require('./services/db.sequelize')
+const connection = require('./config/db');
 require('./config/config');
 
 global.__basedir = __dirname + '/..';
@@ -28,6 +29,15 @@ app.use(require('./routes/index'))
 
 
 db.sequelize.sync();
+
+connection.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+
+    console.log('connected as id ' + connection.threadId);
+});
 
 app.listen(process.env.PORT, () => {
     console.log('ejecutando desde el puerto 3000')

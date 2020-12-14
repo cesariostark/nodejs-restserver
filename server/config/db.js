@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 //Conexion a BD local
-const pool = mysql.createPool({
+const connection = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER_DB,
   password: process.env.PASSWORD,
@@ -11,7 +11,7 @@ const pool = mysql.createPool({
 
 
 //conexion heroku
-/* const pool = mysql.createPool({
+/* const connection = mysql.createconnection({
   host: 'de1tmi3t63foh7fa.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
   user: 'h1dnajsq6r2gyute',
   password: 'mudiro4d6q3a1y0v',
@@ -19,4 +19,4 @@ const pool = mysql.createPool({
   insecureAuth: true
 }); */
 
-module.exports = pool;
+module.exports = connection;
