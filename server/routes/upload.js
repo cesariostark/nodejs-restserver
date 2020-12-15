@@ -41,15 +41,15 @@ const upload = async(req, res) => {
             let usuario = [];
             rows.forEach((row) => {
                 let user = {
-                    rut: row[0],
-                    nombre: row[1],
-                    email: row[2],
-                    contraseña: bcrypt.hashSync(row[3], salt),
-                    direccion: row[4],
-                    comuna: row[5],
-                    centro_costo_1: row[6],
-                    centro_costo_2: row[7],
-                    roles_id_Roles: row[8],
+                    rut: `${row[0]}-${row[1]}`,
+                    nombre: `${row[4]} ${row[3]} ${row[2]}`,
+                    email: null,
+                    contraseña: bcrypt.hashSync(String(row[0]).substr(0, 4), salt),
+                    direccion: row[7],
+                    comuna: row[8],
+                    centro_costo_1: row[5],
+                    centro_costo_2: row[6],
+                    roles_id_Roles: row[9],
                 }
                 usuario.push(user);
             });
@@ -85,14 +85,32 @@ module.exports = app;
 
 
 
+/*
+rut: `${row[0]}-${row[1]}`,
+nombre: `${row[4]} ${row[3]} ${row[2]}`,
+email: null,
+contraseña: bcrypt.hashSync(String(row[0]).substr(0, 4), salt),
+direccion: row[7],
+comuna: row[8],
+centro_costo_1: row[5],
+centro_costo_2: row[6],
+roles_id_Roles: row[9],
+
+*/
 
 
 
-
-
-
-
-
+/* 
+rut: `${row[0]-row[1]}`,
+nombre: `${row[4]} ${row[3]} ${row[2]}`,
+email: row[5],
+contraseña: bcrypt.hashSync(row[6], salt),
+direccion: row[7],
+comuna: row[8],
+centro_costo_1: row[9],
+centro_costo_2: row[10],
+roles_id_Roles: row[11],
+*/
 
 
 
