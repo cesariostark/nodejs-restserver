@@ -6,7 +6,8 @@ const pool = mysql.createPool({
   user: process.env.USER_DB,
   password: process.env.PASSWORD,
   database: process.env.DB,
-  insecureAuth: true
+  insecureAuth: true,
+  debug: true
 });
 
 

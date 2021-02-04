@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const usuario = require('../services/usuario.controller');
-const viaje = require('../services/viaje.controller');
 const {verifToken} = require('../middlewares/auth');
 const app = express();
 

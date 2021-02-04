@@ -61,7 +61,8 @@ const upload = async(req, res) => {
             .catch((error) => {
                 res.status(400).json({
                     message: 'Falla al importar registros en base de datos',
-                    error: error.message
+                    error: error.message,
+                    error: error
                 });
             });
         });

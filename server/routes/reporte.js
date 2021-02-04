@@ -1,20 +1,15 @@
-/* const express = require('express');
+const express = require('express');
 
-const viaje = require('../services/viaje.controller');
+const reporte = require('../services/reporte.controller');
 const app = express();
 
 
-//Obtener viaje por ID
-app.get('/viaje', (req, res) => {
+//Obtener viaje por fecha
+app.get('/reporte', (req, res) => {
 
+    let body = req.body;
 
-});
-
-//Obtener todos los viajes
-app.get('/viaje', (req, res) => {
-
-
-    viaje.obtenerViaje((error, results) => {
+    reporte.obtenerReportePorFecha(body, (error, results) => {
 
         if(error){
             console.log(error)
@@ -23,7 +18,7 @@ app.get('/viaje', (req, res) => {
         if(!results){
             return res.json({
                 success: 0,
-                mensaje: 'No existen viajes en la base de datos'
+                mensaje: 'No existen reportes en la base de datos'
             });
         }
         res.json({
@@ -31,13 +26,15 @@ app.get('/viaje', (req, res) => {
             data: results
         });
     });
+
 });
 
-//Crea viaje
-app.post('/viaje/crear', (req, res) => {
+
+//Crea reporte
+app.post('/reporte/crear', (req, res) => {
 
     const data = req.body;
-    viaje.crearViaje(data, (error, results) => {
+    reporte.crearReporte(data, (error, results) => {
         if(error) {
             console.log(error);
             return res.status(500).json({
@@ -48,9 +45,9 @@ app.post('/viaje/crear', (req, res) => {
         return res.status(200).json({
             success: 1,
             data: results,
-            message: 'Viaje creado creado'
+            message: 'Reporte creado'
         });
     });
 });
 
-module.exports = app; */
+module.exports = app;
