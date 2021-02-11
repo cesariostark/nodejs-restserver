@@ -30,7 +30,7 @@ const obtenerReportePorFecha = (data, callBack) => {
         if(error){
             return callBack(error)
         }
-        return callBack(null, results[0]);
+        return callBack(null, results);
     })
 }
 

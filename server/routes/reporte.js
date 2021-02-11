@@ -5,7 +5,7 @@ const app = express();
 
 
 //Obtener viaje por fecha
-app.get('/reporte', (req, res) => {
+app.put('/reporte', (req, res) => {
 
     let body = req.body;
 
@@ -31,7 +31,7 @@ app.get('/reporte', (req, res) => {
 
 
 //Crea reporte
-app.post('/reporte/crear', (req, res) => {
+app.post('/crear', (req, res) => {
 
     const data = req.body;
     reporte.crearReporte(data, (error, results) => {

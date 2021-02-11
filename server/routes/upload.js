@@ -53,7 +53,7 @@ const upload = async(req, res) => {
                 }
                 usuario.push(user);
             });
-            Usuario.bulkCreate(usuario).then(() => {
+            Usuario.bulkCreate(usuario, {updateOnDuplicate: ['rut', 'nombre', 'direccion', 'comuna', 'centro_costo_1', 'centro_costo_2']}).then(() => {
                 res.status(200).json({
                     message: 'Archivo subido a la base de datos: ' + req.file.originalname
                 });
